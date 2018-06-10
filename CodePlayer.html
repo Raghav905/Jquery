@@ -1,0 +1,181 @@
+    <html>
+
+        <head>
+
+            <title>J-Query</title>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+            
+            <meta http-equiv="X-UA-Compatible" content="IE=ie8"> 
+            
+            <script src="jquery-ui/jquery-ui.js"></script>
+            
+            <link href="jquery-ui/jquery-ui.css" rel="stylesheet" >
+
+            <style type="text/css">
+                
+                body {
+                    font-family: sans-serif;
+                    padding: 0;
+                    margin: 0;
+                }
+            
+                #header {
+                    width: 100%;
+                    background-color: #EEEEEE;
+                    padding: 5px;
+                    height: 30px;
+                }
+                
+                #logo {
+                    float: left;
+                    font-weight: bold;
+                    font-size: 130%;
+                    padding: 3px 5px;
+                }
+                
+                #buttonContainer {
+                    width: 300px;
+                    margin: 0 auto;
+                }
+                
+                .toggleButtons{
+                    float: left;
+                    border: 1px solid grey;
+                    padding: 4px;
+                    border-right: none; 
+                }
+                
+                #html {
+                    border-top-left-radius: 4px;
+                    border-bottom-left-radius: 4px;
+                }
+                
+                #output {
+                    border-right: 1px solid grey;
+                    border-top-right-radius: 4px;
+                    border-bottom-right-radius: 4px;
+                }
+                
+                .active {
+                    background-color: #E8F2FF;
+                }
+                .highlightedButton {
+                    background-color: grey;
+                }
+                
+                textarea {
+                    width: 50%;
+                    resize: none;
+                    border-top: none;
+                   
+                }
+                
+                .panel {
+                    float: left;
+                    border-left: none;
+                }
+                
+                iframe {
+                    border: none;
+                }
+                
+                .hidden {
+                    display: none;
+                }
+                
+            </style>
+            
+
+        </head>
+
+        <body>
+    
+            <div id="header">
+            
+            
+                <div id="logo">
+                
+                    CodePlayer
+                
+                </div>
+                
+                <div id="buttonContainer">
+                
+                    <div class="toggleButtons active" id="html">HTML</div>
+                    
+                    <div class="toggleButtons" id="css">CSS</div>
+                    
+                    <div class="toggleButtons" id="js">Javascript</div>
+                    
+                    <div class="toggleButtons active" id="output">Output</div>
+                
+                </div>
+            
+            </div>
+            
+            <div id="bodyContainer">
+            
+                
+                <textarea id="htmlPanel" class="pannel"></textarea>
+                
+                <textarea id="cssPanel" class="pannel hidden"></textarea>
+                
+                <textarea id="jsPanel" class="pannel hidden"></textarea>
+                
+                <iframe id="outputPanel" class="pannel"></iframe>
+                
+            
+            </div>
+            
+            <script type="text/javascript">
+                
+                function updateOutput(){
+                    $("iframe").contents().find("html").html("<html><head></head><style type='text/css'>"+$("#cssPanel").val() +"</style><body>"+$("#htmlPanel").val()+"</body></html>");
+                    
+                    document.getElementById("outputPanel").contentWindow.eval($("#jsPanel").val());
+                   
+                }
+              
+                $(".toggleButtons").hover(function(){
+                    $(this).addClass("highlightedButton");
+                },function(){
+                    $(this).removeClass("highlightedButton");
+                });
+                
+                $(".toggleButtons").click(function(){
+                    $(this).toggleClass("active");
+                    $(this).removeClass("highlightedButton");
+                    
+                   var panelId = $(this).attr("id") + "Panel";
+                    
+                    $("#" + panelId).toggleClass("hidden");
+                    
+                    var numItems = $(".hidden").length;
+                    numItems = 4 - numItems;
+                    
+                    $(".pannel").width(($(window).width()/numItems) - 7);
+                    
+                    
+                })
+                
+                $(".pannel").height($(window).height() - $("#header").height() - 15);
+                
+                $(".pannel").width(($(window).width()/2) - 7);
+                
+                updateOutput();
+                
+                $("textarea").on('change keyup paste',function(){
+                    updateOutput();
+                });
+                
+               
+                
+                
+                
+            </script>
+
+        </body>
+
+    </html>
